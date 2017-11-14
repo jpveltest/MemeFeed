@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MemeFeed</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        socket.on('newContent', function(content) {
+            for (var i = 0; i < content.length; i++) {
+                var info = document.createElement("div");
+                info.className = "story";
+
+                var title = '<h3><a href="'+content[i].link+'">'+content[i].title+'</a></h3>';
+                var author = '<span>Author: '+content[i].user+'</span>';
+                var score = '<span>Score: '+content[i].score+'</span>';
+                info.innerHTML = title+'<br>'+author+'<br>'+score;
+                document.getElementById("content").appendChild(info);
+            }
+        });
+
+        function bottomPage() {
+            console.log("YEKJ");
+            var x = 1;
+            socket.emit('loadMore', x);
+        }
+
+        window.setTimeout(function() {
+            bottomPage();
+        }, 3000);
+
+    </script>
+
+    <style>
+        .story {
+            padding: 0px;
+            margin-left:0px;
+            margin-bottom:10px;
+            border:2px solid black;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="content"></div>
+    
+</body>
+</html>
