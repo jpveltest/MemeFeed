@@ -51,8 +51,8 @@ http.listen(3001, function() {
 });
 
 var webcrawler = new wc.Webcrawler();
-
-webcrawler.getContent("https://www.reddit.com", function(content) {
+//webcrawler.getContent("https://www.reddit.com", function(content) {
+webcrawler.getContent("https://www.youtube.com/feed/trending", function(content) {
 
   io.on('connection', function(socket) {
     console.log('a user connected');
