@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>MemeFeed</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>
+    <script type="text/javascript" src="authenticate.js"></script>
 
+    <script>
     function signup() {
-        console.log("form: ");
-        var form = document.getElementsByTagName("form");
-        var inputs = form[0].getElementsByTagName("input");
+        var form = document.getElementById("signupForm");
+        var inputs = form.getElementsByTagName("input");
 
         var formData = {};
         for(var i = 0; i < inputs.length; i++){
@@ -22,7 +21,36 @@
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
             if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-                console.log("we done dawg");
+                console.log("Registration: success");
+                window.location.href = "/";
+            }
+        }
+        xhr.send(formdata);
+    }
+
+    function login() {
+        var form = document.getElementById("loginForm");
+        var inputs = form.getElementsByTagName("input");
+
+        var formData = {};
+        for(var i = 0; i < inputs.length; i++){
+           formData[inputs[i].name] = inputs[i].value;
+        }
+        var formdata = JSON.stringify(formData);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/login', true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                var response = xhr.responseText;
+                var success = authLogin(response);
+                if (success) {
+                    window.location.href = "/";
+                } else {
+                    alert("Incorrect login information. Try again.");
+                    document.getElementById("loginForm").reset();
+                }
             }
         }
         xhr.send(formdata);
@@ -41,24 +69,35 @@
 </head>
 <body>
     <a href="/">Back to Feed</a>
+    <div id="logoutContent">
+        <div>
+            <h3>Login</h3>
+            <form id="loginForm" onsubmit="login(); return false;">
+                <label><b>Username or Email</b></label>
+                <input type="text" placeholder="Enter Username or Email" name="usernameemail" required>
+                <br>
+                <label><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" required>
+                <br>
+                <button type="submit" class="signupbtn">Login</button>
+            </form>
+        </div>
+        <div>
+            <h3>Don't have an account? Sign up below!</h3>
+            <form id="signupForm" onsubmit="signup(); return false;">
+                <label><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email" required>
+                <br>
+                <label><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="username" required>
+                <br>
+                <label><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="password" required>
+                <br>
+                <button type="submit" class="signupbtn">Sign up</button>
+            </form>
+        </div>
     <div>
-        <h3>Log in</h3>
-    </div>
-    <div>
-        <h3>Don't have an account? Sign up below!</h3>
-        <form onsubmit="signup(); return false;">
-            <label><b>Email</b></label>
-            <input type="text" placeholder="Enter Email" name="email" required>
-            <br>
-            <label><b>Username</b></label>
-            <input type="text" placeholder="Enter Username" name="username" required>
-            <br>
-            <label><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="password" required>
-            <br>
-            <button type="submit" class="signupbtn">Sign up</button>
-        </form>
-    </div>
     
 </body>
 </html>

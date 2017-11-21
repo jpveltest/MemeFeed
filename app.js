@@ -1,4 +1,5 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var bodyParser = require('body-parser');
@@ -8,14 +9,15 @@ var wc = require('./webcrawler');
 
 var database = new db.Database();
 
+app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.get('/register', function(req, res){
+app.get('/register', function(req, res) {
   res.sendFile(__dirname + '/public/register.html');
 });
 
@@ -31,6 +33,19 @@ app.post('/signup', function(req, res) {
  res.send("success");
 });
 
+app.post('/login', function(req, res) {
+ var data = JSON.parse(Object.keys(req.body)[0]);
+ var usernameemail = data.usernameemail;
+ var password = hashCode(data.password);
+
+ database.login(usernameemail, password, function(user) {
+  if (user == -1) {
+    user = user.toString();
+  }
+  res.send(user);
+ });
+});
+
 http.listen(3001, function() {
   console.log('listening on *:3001');
 });
@@ -38,7 +53,6 @@ http.listen(3001, function() {
 var webcrawler = new wc.Webcrawler();
 
 webcrawler.getContent("https://www.reddit.com", function(content) {
-  //console.log(content);
 
   io.on('connection', function(socket) {
     console.log('a user connected');

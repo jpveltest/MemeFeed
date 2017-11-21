@@ -5,8 +5,31 @@
     <title>MemeFeed</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="authenticate.js"></script>
     <script>
         var socket = io();
+        window.onload = function() {
+            var nav = document.getElementById("nav");
+            if (localStorage.loggedIn == 'true') {
+                var greeting = document.createElement("span");
+                var logout = document.createElement("button");
+                greeting.innerHTML = "Hello, " + localStorage.username + "!";
+                logout.type = "submit";
+                logout.innerHTML = "Logout";
+                logout.onclick = function() {
+                    authLogout();
+                    location.reload();
+                }
+                nav.appendChild(greeting);
+                nav.appendChild(logout);
+            } else {
+                var anchor = document.createElement("a");
+                anchor.href = "/register";
+                anchor.innerHTML = "Log in / Sign up";
+                nav.appendChild(anchor);
+            }
+            bottomPage();
+        }
         socket.on('newContent', function(content) {
             for (var i = 0; i < content.length; i++) {
                 var info = document.createElement("div");
@@ -26,10 +49,6 @@
             socket.emit('loadMore', x);
         }
 
-        window.setTimeout(function() {
-            bottomPage();
-        }, 3000);
-
     </script>
 
     <style>
@@ -43,7 +62,7 @@
 
 </head>
 <body>
-    <a href="/register">Log in / Sign up</a>
+    <div id="nav"></div>
     <div id="content"></div>
     
 </body>
