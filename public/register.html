@@ -22,7 +22,8 @@
         xhr.onreadystatechange = function() {
             if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
                 console.log("Registration: success");
-                window.location.href = "/";
+                alert("You may now login!");
+                //window.location.href = "/";
             }
         }
         xhr.send(formdata);

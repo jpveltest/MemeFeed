@@ -51,28 +51,39 @@ http.listen(3001, function() {
 });
 
 var webcrawler = new wc.Webcrawler();
-//webcrawler.getContent("https://www.reddit.com", function(content) {
-webcrawler.getContent("https://www.youtube.com/feed/trending", function(content) {
 
-  io.on('connection', function(socket) {
-    console.log('a user connected');
+webcrawler.getContent("https://www.reddit.com", function(c1) {
+  webcrawler.getContent("https://www.youtube.com/feed/trending", function(c2) {
+    webcrawler.getContent("https://www.memecenter.com", function(c3) {
+      var content = shuffleArray(c1.concat(c2).concat(c3));
 
-    socket.on('loadMore', function(x) {
-      socket.emit('newContent', content); // socket.emit() for just that one user.
+      io.on('connection', function(socket) {
+        console.log('a user connected');
+
+        socket.on('loadMore', function(x) {
+          socket.emit('newContent', content); // socket.emit() for just that one user.
+        });
+
+        socket.on('disconnect', function() {
+          console.log('user disconnected');
+        });
+      });
     });
-
-
-    socket.on('disconnect', function() {
-      console.log('user disconnected');
-    });
-
   });
-
 });
 
 function hashCode(s) {
   return s.split("").reduce(function(a,b){a=((a<<5)-a)+b.charCodeAt(0);return a&a},0);              
 }
 
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+  return array;
+}
 
 
