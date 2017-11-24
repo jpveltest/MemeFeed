@@ -21,9 +21,14 @@
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
             if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-                console.log("Registration: success");
-                alert("You may now login!");
-                //window.location.href = "/";
+                var response = xhr.responseText;
+                if (response == "taken") {
+                    alert("Username already taken, please try again!");
+                    document.getElementById("signupForm").reset();
+                } else {
+                    var success = authLogin(response);
+                    window.location.href = "/";
+                }
             }
         }
         xhr.send(formdata);

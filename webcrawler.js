@@ -65,8 +65,8 @@ Webcrawler.prototype._scrapeYouTube = function($, content, callback) {
       link: link
     });
 
-    if (index == 6) {
-      return false;
+    if (index == 4) {
+      //return false;
     }
   });
   callback(content);

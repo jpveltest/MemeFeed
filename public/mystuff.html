@@ -8,15 +8,11 @@
     <script type="text/javascript" src="authenticate.js"></script>
     <script>
         var socket = io();
-        var x = 0;
-        var lastCalled = new Date().getTime();
-
         window.onload = function() {
             var nav = document.getElementById("nav");
             if (localStorage.loggedIn == 'true') {
                 var greeting = document.createElement("span");
                 var logout = document.createElement("button");
-                var mystuff = document.createElement("a");
                 greeting.innerHTML = "Hello, " + localStorage.username + "!";
                 logout.type = "submit";
                 logout.innerHTML = "Logout";
@@ -24,10 +20,7 @@
                     authLogout();
                     location.reload();
                 }
-                mystuff.href = "/mystuff";
-                mystuff.innerHTML = "My Stuff";
                 nav.appendChild(greeting);
-                nav.appendChild(mystuff);
                 nav.appendChild(logout);
             } else {
                 var anchor = document.createElement("a");
@@ -37,21 +30,6 @@
             }
             bottomPage();
         }
-
-        window.onscroll = function() {
-            if (document.documentElement.scrollHeight - document.documentElement.scrollTop < 2000) {
-                console.log("Loading more...");
-                var currentTime = new Date().getTime();
-                if (currentTime - lastCalled > 5000) {
-                    var content = document.getElementById("content");
-                    for (var i = 0; i < content.children.length; i++) {
-                        content.children[i].remove();
-                    }
-                    bottomPage();
-                }
-            }
-        }
-
         socket.on('newContent', function(content) {
             for (var i = 0; i < content.length; i++) {
                 var info = document.createElement("div");
@@ -66,7 +44,7 @@
                     var title = '<h3>'+content[i].title+'</h3>';
                     var vidLink = content[i].link.replace("watch?v=", "embed/");
                     var video = document.createElement('iframe');
-                    video.width = "560";
+                    video.width = "420";
                     video.height = "315";
                     video.src = "https://youtube.com" + vidLink + "?autoplay=1&loop=1&mute=1";
                     video.frameborder = "0";
@@ -80,19 +58,14 @@
         });
 
         function bottomPage() {
-            lastCalled = new Date().getTime();
             console.log("YEKJ");
+            var x = 1;
             socket.emit('loadMore', x);
-            x++;
         }
 
     </script>
 
     <style>
-        #content {
-            margin-left:25%;
-            margin-right:25%;
-        }
         .story {
             padding: 0px;
             margin-left:0px;
@@ -105,7 +78,6 @@
 <body>
     <div id="nav"></div>
     <div id="content"></div>
-    <center>Loading...</center>
     
 </body>
 </html>

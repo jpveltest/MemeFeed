@@ -14,13 +14,14 @@ function Database() {
     });
 }
 
-Database.prototype.addUser = function(username, pass, email) {
+Database.prototype.addUser = function(username, pass, email, callback) {
   var sql = "INSERT INTO users VALUES (DEFAULT, '"+username+"', '"+pass+"', '"+email+"');";
   console.log(sql);
   this.con.query(sql, function (err, result) {
     if (err) throw err;
 
     console.log("Added user: " + username);
+    callback();
   });
 }
 
@@ -35,6 +36,16 @@ Database.prototype.login = function(usernameemail, pass, callback) {
       r = result[0];
     }
     callback(r);
+  });
+}
+
+Database.prototype.getNumberOfDuplicateUsers = function(username, callback) {
+  var sql = "SELECT username FROM users WHERE username = '"+username+"';";
+  console.log(sql);
+  this.con.query(sql, function (err, result) {
+    if (err) throw err;
+
+    callback(result.length);
   });
 }
 
