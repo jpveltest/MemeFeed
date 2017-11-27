@@ -49,4 +49,27 @@ Database.prototype.getNumberOfDuplicateUsers = function(username, callback) {
   });
 }
 
+Database.prototype.saveContent = function(content, userSave, userSharedTo, userSharedBy, callback) {
+  var sql = "INSERT INTO contents VALUES (DEFAULT, '"+content+"', "+userSave+", "+userSharedTo+", "+userSharedBy+", CURRENT_TIMESTAMP);";
+  console.log(sql);
+  this.con.query(sql, function (err, result) {
+    if (err) throw err;
+
+    callback();
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 exports.Database = Database;

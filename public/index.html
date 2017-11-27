@@ -17,6 +17,7 @@
                 var greeting = document.createElement("span");
                 var logout = document.createElement("button");
                 var mystuff = document.createElement("a");
+                var sharedwithme = document.createElement("a");
                 greeting.innerHTML = "Hello, " + localStorage.username + "!";
                 logout.type = "submit";
                 logout.innerHTML = "Logout";
@@ -26,8 +27,11 @@
                 }
                 mystuff.href = "/mystuff";
                 mystuff.innerHTML = "My Stuff";
+                sharedwithme.href = "/sharedwithme";
+                sharedwithme.innerHTML = "Shared with me";
                 nav.appendChild(greeting);
                 nav.appendChild(mystuff);
+                nav.appendChild(sharedwithme);
                 nav.appendChild(logout);
             } else {
                 var anchor = document.createElement("a");
@@ -75,6 +79,46 @@
                 } else if (content[i].src == "memecenter") {
                     info.innerHTML = '<a href="'+content[i].link+'">'+content[i].meme+'</a>';
                 }
+
+                var save = document.createElement("button");
+                save.innerHTML = "Save";
+                save.onclick = function() {
+                    if (localStorage.loggedIn == "false") {
+                        alert("You must login to save content!");
+                        return false;
+                    }
+                    var sendMe = {};
+                    sendMe['userId'] = Number(localStorage.userId);
+                    sendMe['content'] = escape(this.parentElement.outerHTML);
+
+                    var sendme = JSON.stringify(sendMe);
+
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", '/savecontent', true);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function() {
+                        if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                            var response = xhr.responseText;
+                            if (response == "success") {
+                                alert("Saved!");
+                            } else {
+                                alert("Please try saving again.");
+                            }
+                            
+                        }
+                    }
+                    xhr.send(sendme);
+                };
+
+                var share = document.createElement("button");
+                share.innerHTML = "Share";
+                share.onclick = function() {
+
+                }
+
+                info.appendChild(save);
+                info.appendChild(share);
+
                 document.getElementById("content").appendChild(info);
             }
         });
@@ -98,6 +142,9 @@
             margin-left:0px;
             margin-bottom:10px;
             border:2px solid black;
+        }
+        #nav {
+            position:fixed;
         }
     </style>
 

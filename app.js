@@ -25,6 +25,9 @@ app.get('/mystuff', function(req, res) {
   res.sendFile(__dirname + '/public/mystuff.html');
 });
 
+app.get('/sharedwithme', function(req, res) {
+  res.sendFile(__dirname + '/public/sharedwithme.html');
+});
 app.post('/signup', function(req, res) {
   var data = JSON.parse(Object.keys(req.body)[0]);
 
@@ -59,6 +62,17 @@ app.post('/login', function(req, res) {
     }
     res.send(user);
  });
+});
+
+app.post('/savecontent', function(req, res) {
+  var data = Object.keys(req.body)[0];
+
+  var userId = data.match(/[0-9]+/)[0];
+  var content = data.match(/<div class="story".*div>/)[0]
+
+  database.saveContent(content, userId, null, null, function() {
+    res.send("success");
+  });
 });
 
 http.listen(3001, function() {
