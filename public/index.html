@@ -3,42 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>MemeFeed</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="authenticate.js"></script>
+    <script type="text/javascript" src="makenavbar.js"></script>
     <script>
         var socket = io();
         var x = 0;
         var lastCalled = new Date().getTime();
 
         window.onload = function() {
-            var nav = document.getElementById("nav");
-            if (localStorage.loggedIn == 'true') {
-                var greeting = document.createElement("span");
-                var logout = document.createElement("button");
-                var mystuff = document.createElement("a");
-                var sharedwithme = document.createElement("a");
-                greeting.innerHTML = "Hello, " + localStorage.username + "!";
-                logout.type = "submit";
-                logout.innerHTML = "Logout";
-                logout.onclick = function() {
-                    authLogout();
-                    location.reload();
-                }
-                mystuff.href = "/mystuff";
-                mystuff.innerHTML = "My Stuff";
-                sharedwithme.href = "/sharedwithme";
-                sharedwithme.innerHTML = "Shared with me";
-                nav.appendChild(greeting);
-                nav.appendChild(mystuff);
-                nav.appendChild(sharedwithme);
-                nav.appendChild(logout);
-            } else {
-                var anchor = document.createElement("a");
-                anchor.href = "/register";
-                anchor.innerHTML = "Log in / Sign up";
-                nav.appendChild(anchor);
-            }
+            navbar();
             bottomPage();
         }
 

@@ -3,81 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <title>MemeFeed</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="authenticate.js"></script>
+    <script type="text/javascript" src="makenavbar.js"></script>
     <script>
         var socket = io();
+        var x = 0;
+        var lastCalled = new Date().getTime();
+
         window.onload = function() {
-            var nav = document.getElementById("nav");
-            if (localStorage.loggedIn == 'true') {
-                var greeting = document.createElement("span");
-                var logout = document.createElement("button");
-                greeting.innerHTML = "Hello, " + localStorage.username + "!";
-                logout.type = "submit";
-                logout.innerHTML = "Logout";
-                logout.onclick = function() {
-                    authLogout();
-                    location.reload();
-                }
-                nav.appendChild(greeting);
-                nav.appendChild(logout);
-            } else {
-                var anchor = document.createElement("a");
-                anchor.href = "/register";
-                anchor.innerHTML = "Log in / Sign up";
-                nav.appendChild(anchor);
-            }
+            navbar();
             bottomPage();
         }
-        socket.on('newContent', function(content) {
-            for (var i = 0; i < content.length; i++) {
-                var info = document.createElement("div");
-                info.className = "story";
 
-                if (content[i].src == "reddit") {
-                    var title = '<h3><a href="'+content[i].link+'">'+content[i].title+'</a></h3>';
-                    var author = '<span>Author: '+content[i].user+'</span>';
-                    var score = '<span>Score: '+content[i].score+'</span>';
-                    info.innerHTML = title+'<br>'+author+'<br>'+score;
-                } else if (content[i].src == "youtube") {
-                    var title = '<h3>'+content[i].title+'</h3>';
-                    var vidLink = content[i].link.replace("watch?v=", "embed/");
-                    var video = document.createElement('iframe');
-                    video.width = "420";
-                    video.height = "315";
-                    video.src = "https://youtube.com" + vidLink + "?autoplay=1&loop=1&mute=1";
-                    video.frameborder = "0";
-                    info.innerHTML = title;
-                    info.appendChild(video);
-                } else if (content[i].src == "memecenter") {
-                    info.innerHTML = '<a href="'+content[i].link+'">'+content[i].meme+'</a>';
-                }
-                document.getElementById("content").appendChild(info);
+        socket.on('newContent', function(results) {
+            var contentDiv = document.getElementById("content");
+            for (var i = 0; i < results.length; i++) {
+                contentDiv.innerHTML += results[i].content;
+                contentDiv.innerHTML += "<br>";
             }
         });
 
         function bottomPage() {
+            lastCalled = new Date().getTime();
             console.log("YEKJ");
-            var x = 1;
-            socket.emit('loadMore', x);
+            var userId = Number(localStorage.userId);
+            socket.emit('loadSaved', userId);
+            x++;
         }
 
     </script>
 
     <style>
+        #content {
+            margin-left:25%;
+            margin-right:25%;
+        }
         .story {
             padding: 0px;
             margin-left:0px;
             margin-bottom:10px;
             border:2px solid black;
         }
+        #nav {
+            position:fixed;
+        }
     </style>
 
 </head>
 <body>
     <div id="nav"></div>
-    <div id="content"></div>
-    
+    <div id="content"></div>    
 </body>
 </html>

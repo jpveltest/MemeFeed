@@ -113,6 +113,14 @@ io.on('connection', function(socket) {
     });
   });
 
+  socket.on('loadSaved', function(userId) {
+    database.getSavedContent(userId, function(content) {
+      console.log("Content:");
+      console.log(content);
+      socket.emit('newContent', content);
+    });
+  });
+
   socket.on('disconnect', function() {
     console.log('user disconnected');
   });

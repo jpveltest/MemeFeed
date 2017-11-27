@@ -59,6 +59,15 @@ Database.prototype.saveContent = function(content, userSave, userSharedTo, userS
   });
 }
 
+Database.prototype.getSavedContent = function(userId, callback) {
+  var sql = "SELECT content FROM contents WHERE user_save = "+userId+";";
+  console.log(sql);
+  this.con.query(sql, function (err, result) {
+    if (err) throw err;
+
+    callback(result);
+  });
+}
 
 
 
