@@ -75,6 +75,29 @@ app.post('/savecontent', function(req, res) {
   });
 });
 
+app.post('/getallusersexceptcurrent', function(req, res) {
+  var userId = Object.keys(req.body)[0];
+  database.getAllUsersExceptCurrent(userId, function(users) {
+    res.send(users);
+  })
+});
+
+app.post('/sharecontent', function(req, res) {
+  var nums = Object.keys(req.body)[0];
+  console.log(req.body);
+//   var arr = nums.match(/[0-9]+/g);
+//   var userSharedBy = Number(arr.pop());
+//   recurse(arr.length - 1);
+//   function recurse(num) {
+//     if (num < 0) {
+//       return;
+//     }
+//     database.saveContent(content, null, Number(arr[num]), userSharedBy, function(users) {
+//       recurse(num-1);
+//     })
+//   }
+});
+
 http.listen(3001, function() {
   console.log('listening on *:3001');
 });
@@ -115,8 +138,6 @@ io.on('connection', function(socket) {
 
   socket.on('loadSaved', function(userId) {
     database.getSavedContent(userId, function(content) {
-      console.log("Content:");
-      console.log(content);
       socket.emit('newContent', content);
     });
   });

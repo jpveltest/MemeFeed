@@ -69,7 +69,15 @@ Database.prototype.getSavedContent = function(userId, callback) {
   });
 }
 
+Database.prototype.getAllUsersExceptCurrent = function(userId, callback) {
+  var sql = "SELECT username, id FROM users WHERE id <> "+userId+";";
+  console.log(sql);
+  this.con.query(sql, function (err, result) {
+    if (err) throw err;
 
+    callback(result);
+  });
+}
 
 
 

@@ -87,9 +87,86 @@
                 var share = document.createElement("button");
                 share.innerHTML = "Share";
                 share.onclick = function() {
+                    if (localStorage.loggedIn == "false") {
+                        alert("You must login to share content!");
+                        return false;
+                    }
+                    var modal = document.createElement("div");
+                    modal.style.backgroundColor = "gray";
+                    modal.style.position = "fixed";
+                    modal.style.top = "20%";
+                    modal.style.left = "45%";
+                    modal.style.width = "200px";
 
-                }
+                    var destroy = document.createElement("button");
+                    destroy.innerHTML = "X";
+                    destroy.onclick = function() {
+                        this.parentElement.remove();
+                    }
+                    modal.appendChild(destroy);
 
+                    var sendMe = [];
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", '/getallusersexceptcurrent', true);
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function() {
+                        if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                            var data = xhr.responseText;
+                            var results = JSON.parse(data);
+                            var ul = document.createElement("ul");
+                            for (var i = 0; i < results.length; i++) {
+                                var li = document.createElement("li");
+                                li.innerHTML = results[i].username;
+                                li.value = results[i].id;
+                                li.onclick = function() {
+                                    if (!sendMe.includes(this.value)) {
+                                        this.style.backgroundColor = "white";
+                                        sendMe.push(this.value);
+                                    } else {
+                                        this.style.backgroundColor = "gray";
+                                        var index = sendMe.indexOf(this.value);
+                                        sendMe.splice(index, 1);
+                                    }
+                                }
+                                ul.appendChild(li);
+                            }
+                            var submitShare = document.createElement("button");
+                            submitShare.innerHTML = "Share";
+                            submitShare.onclick = function() {
+                                sendMe.push(Number(localStorage.userId));
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("POST", '/sharecontent', true);
+                                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                                xhr.onreadystatechange = function() {
+                                    if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                                        var data = xhr.responseText;
+                                    }
+                                }
+                                var sendme = {};
+                                sendme['share'] = sendMe;
+                                sendme['content'] = escape(this.parentElement.parentElement.outerHTML);
+                                console.log(sendme);
+                                console.log(JSON.stringify(sendme));
+                                xhr.send(JSON.stringify(sendme));
+
+                                modal.remove(); // Will move into onreadystatechange later
+                            }
+                            modal.appendChild(ul);
+                            modal.appendChild(submitShare);
+                        }
+                    }
+                    xhr.send(Number(localStorage.userId));
+
+                    info.appendChild(modal);
+                    // var sendMe = {};
+                    // sendMe['sharedBy'] = Number(localStorage.userId);
+                    // sendMe['content'] = escape(this.parentElement.outerHTML);
+
+                    // var sendme = JSON.stringify(sendMe);
+
+                    
+                };
+                info.appendChild(document.createElement("br"));
                 info.appendChild(save);
                 info.appendChild(share);
 
