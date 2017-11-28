@@ -145,9 +145,10 @@
                                 var sendme = {};
                                 sendme['share'] = sendMe;
                                 sendme['content'] = escape(this.parentElement.parentElement.outerHTML);
+                                sendMe.push(sendme['content']);
                                 console.log(sendme);
                                 console.log(JSON.stringify(sendme));
-                                xhr.send(JSON.stringify(sendme));
+                                xhr.send(sendMe);
 
                                 modal.remove(); // Will move into onreadystatechange later
                             }

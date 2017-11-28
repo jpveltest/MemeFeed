@@ -66,11 +66,14 @@ app.post('/login', function(req, res) {
 
 app.post('/savecontent', function(req, res) {
   var data = Object.keys(req.body)[0];
-
+  console.log(data);
   var userId = data.match(/[0-9]+/)[0];
+  console.log("userId: " + userId);
   var content = data.match(/<div class="story".*div>/)[0]
 
-  database.saveContent(content, userId, null, null, function() {
+  var cleanContent = content.replace(/'/g, "`");
+
+  database.saveContent(cleanContent, userId, null, null, function() {
     res.send("success");
   });
 });
