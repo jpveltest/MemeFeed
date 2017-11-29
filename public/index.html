@@ -92,6 +92,7 @@
                         return false;
                     }
                     var modal = document.createElement("div");
+                    modal.className = "modal";
                     modal.style.backgroundColor = "gray";
                     modal.style.position = "fixed";
                     modal.style.top = "20%";
@@ -142,13 +143,8 @@
                                         var data = xhr.responseText;
                                     }
                                 }
-                                var sendme = {};
-                                sendme['share'] = sendMe;
-                                sendme['content'] = escape(this.parentElement.parentElement.outerHTML);
-                                sendMe.push(sendme['content']);
-                                console.log(sendme);
-                                console.log(JSON.stringify(sendme));
-                                xhr.send(sendMe);
+                                var con = escape(this.parentElement.parentElement.outerHTML);
+                                xhr.send(sendMe + JSON.stringify(con));
 
                                 modal.remove(); // Will move into onreadystatechange later
                             }
@@ -158,7 +154,9 @@
                     }
                     xhr.send(Number(localStorage.userId));
 
-                    info.appendChild(modal);
+                    this.parentElement.appendChild(modal);
+
+
                     // var sendMe = {};
                     // sendMe['sharedBy'] = Number(localStorage.userId);
                     // sendMe['content'] = escape(this.parentElement.outerHTML);
