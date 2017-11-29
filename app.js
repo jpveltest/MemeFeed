@@ -89,10 +89,11 @@ app.post('/sharecontent', function(req, res) {
   var data = Object.keys(req.body)[0];
   var nums = data.substring(0, data.indexOf('"'));
   var content = data.substring(data.indexOf("<"), data.indexOf('<div class="modal"')) + "</div>";
-
+  var cleanContent = content.replace(/'/g, "`");
+  
   var arr = nums.match(/[0-9]+/g);
   var userSharedBy = Number(arr.pop());
-  recurse(arr.length - 1, content);
+  recurse(arr.length - 1, cleanContent);
   function recurse(num, con) {
     if (num < 0) {
       return;
