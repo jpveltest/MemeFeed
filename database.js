@@ -79,6 +79,19 @@ Database.prototype.getAllUsersExceptCurrent = function(userId, callback) {
   });
 }
 
+Database.prototype.getSharedContent = function(userSharedTo, callback) {
+  var sql = "SELECT c.content, u.username username_shared_by, c.date_added "+
+    "FROM contents c "+
+    "INNER JOIN users u ON c.user_shared_by = u.id "+
+    "WHERE c.user_shared_to = "+userSharedTo+";";
+  console.log(sql);
+  this.con.query(sql, function (err, result) {
+    if (err) throw err;
+
+    callback(result);
+  });
+}
+
 
 
 

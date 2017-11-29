@@ -20,6 +20,9 @@
             var contentDiv = document.getElementById("content");
             for (var i = 0; i < results.length; i++) {
                 contentDiv.innerHTML += results[i].content;
+                var sp = document.createElement("span");
+                sp.innerHTML = "Shared with you by " + results[i].username_shared_by + " on " + results[i].date_added;
+                contentDiv.appendChild(sp);
                 contentDiv.innerHTML += "<br>";
             }
         });
@@ -28,7 +31,7 @@
             lastCalled = new Date().getTime();
             console.log("YEKJ");
             var userId = Number(localStorage.userId);
-            socket.emit('loadSaved', userId);
+            socket.emit('loadShared', userId);
             x++;
         }
 

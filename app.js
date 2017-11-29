@@ -82,7 +82,7 @@ app.post('/getallusersexceptcurrent', function(req, res) {
   var userId = Object.keys(req.body)[0];
   database.getAllUsersExceptCurrent(userId, function(users) {
     res.send(users);
-  })
+  });
 });
 
 app.post('/sharecontent', function(req, res) {
@@ -90,17 +90,16 @@ app.post('/sharecontent', function(req, res) {
   var nums = data.substring(0, data.indexOf('"'));
   var content = data.substring(data.indexOf("<"), data.indexOf('<div class="modal"')) + "</div>";
 
-  console.log(content);
   var arr = nums.match(/[0-9]+/g);
   var userSharedBy = Number(arr.pop());
-  recurse(arr.length - 1);
-  function recurse(num) {
+  recurse(arr.length - 1, content);
+  function recurse(num, con) {
     if (num < 0) {
       return;
     }
-    database.saveContent(content, null, Number(arr[num]), userSharedBy, function(users) {
-      recurse(num-1);
-    })
+    database.saveContent(con, null, Number(arr[num]), userSharedBy, function(users) {
+      recurse(num-1, con);
+    });
   }
 });
 
@@ -147,6 +146,12 @@ io.on('connection', function(socket) {
       socket.emit('newContent', content);
     });
   });
+
+  socket.on('loadShared', function(userId) {
+    database.getSharedContent(userId, function(result) {
+      socket.emit('newContent', result);
+    });
+  }); 
 
   socket.on('disconnect', function() {
     console.log('user disconnected');
