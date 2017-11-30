@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>MemeFeed</title>
     <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
     <script type="text/javascript" src="authenticate.js"></script>
     <script type="text/javascript" src="makenavbar.js"></script>
     <script>
@@ -32,11 +35,13 @@
 
         socket.on('newContent', function(content) {
             for (var i = 0; i < content.length; i++) {
+                var memeBox = document.createElement("div");
+                memeBox.className = "story";
                 var info = document.createElement("div");
-                info.className = "story";
+                info.className = "story-content";
 
                 if (content[i].src == "reddit") {
-                    var title = '<h3><a href="'+content[i].link+'">'+content[i].title+'</a></h3>';
+                    var title = '<h3><a href="'+content[i].link+'" target="_blank">'+content[i].title+'</a></h3>';
                     var author = '<span>Author: '+content[i].user+'</span>';
                     var score = '<span>Score: '+content[i].score+'</span>';
                     info.innerHTML = title+'<br>'+author+'<br>'+score;
@@ -44,8 +49,8 @@
                     var title = '<h3>'+content[i].title+'</h3>';
                     var vidLink = content[i].link.replace("watch?v=", "embed/");
                     var video = document.createElement('iframe');
-                    video.width = "560";
-                    video.height = "315";
+                    video.width = "100%";
+                    video.height = "450px";
                     video.src = "https://youtube.com" + vidLink + "?autoplay=1&loop=1&mute=1";
                     video.frameborder = "0";
                     info.innerHTML = title;
@@ -53,17 +58,19 @@
                 } else if (content[i].src == "memecenter") {
                     info.innerHTML = '<a href="'+content[i].link+'">'+content[i].meme+'</a>';
                 }
-
+                
                 var save = document.createElement("button");
                 save.innerHTML = "Save";
+                save.className = "btn";
                 save.onclick = function() {
+                    console.log("trying to save");
                     if (localStorage.loggedIn == "false") {
                         alert("You must login to save content!");
                         return false;
                     }
                     var sendMe = {};
                     sendMe['userId'] = Number(localStorage.userId);
-                    sendMe['content'] = escape(this.parentElement.outerHTML);
+                    sendMe['content'] = escape(this.parentElement.parentElement.outerHTML);
 
                     var sendme = JSON.stringify(sendMe);
 
@@ -86,6 +93,7 @@
 
                 var share = document.createElement("button");
                 share.innerHTML = "Share";
+                share.className = "btn"
                 share.onclick = function() {
                     if (localStorage.loggedIn == "false") {
                         alert("You must login to share content!");
@@ -168,41 +176,35 @@
                 info.appendChild(document.createElement("br"));
                 info.appendChild(save);
                 info.appendChild(share);
+                memeBox.appendChild(info);
 
-                document.getElementById("content").appendChild(info);
+                document.getElementById("content").appendChild(memeBox);
             }
         });
 
         function bottomPage() {
             lastCalled = new Date().getTime();
-            console.log("YEKJ");
             socket.emit('loadMore', x);
             x++;
         }
 
     </script>
 
-    <style>
-        #content {
-            margin-left:25%;
-            margin-right:25%;
-        }
-        .story {
-            padding: 0px;
-            margin-left:0px;
-            margin-bottom:10px;
-            border:2px solid black;
-        }
-        #nav {
-            position:fixed;
-        }
-    </style>
-
 </head>
 <body>
-    <div id="nav"></div>
-    <div id="content"></div>
-    <center>Loading...</center>
+    <wrap>
+        <div id="nav"></div>
+        <div id="content" class="container"></div>
+        <center>Loading...</center>
+    </wrap>
+    <div id="footer" class="container">
+        <hr>
+        <p class="pull-center">&copy; 2017 MemeFeed</p>
+        <p class="pull-center">
+        Juan Pablo Castano, Thomas Pinella, James Fazio, Lee Stovall<br>
+        CSC212: Human-Computer Interaction
+        </p>
+    </div>
     
 </body>
 </html>

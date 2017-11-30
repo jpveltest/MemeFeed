@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>MemeFeed</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
     <script type="text/javascript" src="authenticate.js"></script>
-
+    <script type="text/javascript" src="makenavbar.js"></script>
     <script>
+
+    window.onload = function() {
+        navbar();
+    }
+
+
     function signup() {
         var form = document.getElementById("signupForm");
         var inputs = form.getElementsByTagName("input");
@@ -63,47 +73,47 @@
     }
     </script>
 
-    <style>
-        .story {
-            padding: 0px;
-            margin-left:0px;
-            margin-bottom:10px;
-            border:2px solid black;
-        }
-    </style>
-
 </head>
 <body>
-    <a href="/">Back to Feed</a>
-    <div id="logoutContent">
-        <div>
-            <h3>Login</h3>
-            <form id="loginForm" onsubmit="login(); return false;">
-                <label><b>Username or Email</b></label>
-                <input type="text" placeholder="Enter Username or Email" name="usernameemail" required>
-                <br>
-                <label><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" required>
-                <br>
-                <button type="submit" class="signupbtn">Login</button>
-            </form>
+    <wrap>
+        <div id="nav"></div>
+        <div id="content" class="container">
+            <div class="account-box">
+                <h3 class="center-text">Login</h3>
+                <form id="loginForm" onsubmit="login(); return false;">
+                    <label><b>Username or Email</b></label>
+                    <input type="text" placeholder="Enter Username or Email" name="usernameemail" required>
+                    <br>
+                    <label><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="password" required>
+                    <br>
+                    <button type="submit" class="signupbtn">Login</button>
+                </form>
+            </div>
+            <div class="account-box">
+                <h3>Don't have an account? Sign up below!</h3>
+                <form id="signupForm" onsubmit="signup(); return false;">
+                    <label><b>Email</b></label>
+                    <input type="text" placeholder="Enter Email" name="email" required>
+                    <br>
+                    <label><b>Username</b></label>
+                    <input type="text" placeholder="Enter Username" name="username" required>
+                    <br>
+                    <label><b>Password</b></label>
+                    <input type="password" placeholder="Enter Password" name="password" required>
+                    <br>
+                    <button type="submit" class="signupbtn">Sign up</button>
+                </form>
+            </div>
         </div>
-        <div>
-            <h3>Don't have an account? Sign up below!</h3>
-            <form id="signupForm" onsubmit="signup(); return false;">
-                <label><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email" required>
-                <br>
-                <label><b>Username</b></label>
-                <input type="text" placeholder="Enter Username" name="username" required>
-                <br>
-                <label><b>Password</b></label>
-                <input type="password" placeholder="Enter Password" name="password" required>
-                <br>
-                <button type="submit" class="signupbtn">Sign up</button>
-            </form>
-        </div>
-    <div>
-    
+    </wrap>
+    <div id="footer" class="container">
+        <hr>
+        <p class="pull-center">&copy; 2017 MemeFeed</p>
+        <p class="pull-center">
+        Juan Pablo Castano, Thomas Pinella, James Fazio, Lee Stovall<br>
+        CSC212: Human-Computer Interaction
+        </p>
+    </div>
 </body>
 </html>

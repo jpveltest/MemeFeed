@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>MemeFeed</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="authenticate.js"></script>
     <script type="text/javascript" src="makenavbar.js"></script>
@@ -26,33 +29,25 @@
 
         function bottomPage() {
             lastCalled = new Date().getTime();
-            console.log("YEKJ");
             var userId = Number(localStorage.userId);
             socket.emit('loadSaved', userId);
             x++;
         }
 
     </script>
-
-    <style>
-        #content {
-            margin-left:25%;
-            margin-right:25%;
-        }
-        .story {
-            padding: 0px;
-            margin-left:0px;
-            margin-bottom:10px;
-            border:2px solid black;
-        }
-        #nav {
-            position:fixed;
-        }
-    </style>
-
 </head>
 <body>
-    <div id="nav"></div>
-    <div id="content"></div>    
+    <wrap>
+        <div id="nav"></div>
+        <div id="content" class="container"></div>
+    </wrap>
+    <div id="footer" class="container">
+        <hr>
+        <p class="pull-center">&copy; 2017 MemeFeed</p>
+        <p class="pull-center">
+        Juan Pablo Castano, Thomas Pinella, James Fazio, Lee Stovall<br>
+        CSC212: Human-Computer Interaction
+        </p>
+    </div>
 </body>
 </html>
