@@ -2,10 +2,10 @@ function Database() {
   var mysql = require('mysql');
 
   this.con = mysql.createConnection({
-    host: "127.0.0.1",
-    user: "root",
-    password: "",
-    database: "memefeed_db"
+    host: "us-cdbr-iron-east-05.cleardb.net",
+    user: "b63d5307eba7e3",
+    password: "ffd6cbc0",
+    database: "heroku_ee7f123ea9dc92e"
   });
 
   this.con.connect(function(err) {
