@@ -151,7 +151,8 @@
                                         var data = xhr.responseText;
                                     }
                                 }
-                                var con = escape(this.parentElement.parentElement.outerHTML);
+                                var con = escape(this.parentElement.parentElement.parentElement.outerHTML);
+                                console.log(con);
                                 xhr.send(sendMe + JSON.stringify(con));
 
                                 modal.remove(); // Will move into onreadystatechange later
@@ -162,7 +163,7 @@
                     }
                     xhr.send(Number(localStorage.userId));
 
-                    this.parentElement.appendChild(modal);
+                    this.parentElement.parentElement.appendChild(modal);
 
 
                     // var sendMe = {};
