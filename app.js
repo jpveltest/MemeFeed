@@ -104,8 +104,10 @@ app.post('/sharecontent', function(req, res) {
   }
 });
 
-http.listen(3001, function() {
-  console.log('listening on *:3001');
+var port = process.env.PORT || 3001;
+
+http.listen(port, function() {
+  console.log('listening on *:' + port);
 });
 
 var webcrawler = new wc.Webcrawler();
