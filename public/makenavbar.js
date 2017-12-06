@@ -8,7 +8,7 @@ function getDivider(){
 function navbar() {
 var nav = document.getElementById("nav");
 
-var firstparts = "<div class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\" style=\"background-color:#CAEBF2;\">";
+var firstparts = "<div class=\"navbar navbar-default navbar-fixed-top\" role=\"navigation\" style=\"background-color:#FFF1D0;\">";
 firstparts += "<div class=\"navbar-header\">";
 firstparts += "<div id=\"navbar-container\" class=\"container fontcolor\">";
 firstparts += "<a href=\"/\" class=\"navbar-brand\"><span><img src=\"../assets/logo.png\" width=\"30\" height=\"30\" class=\"d-inline-block align-top\" alt=\"\"></span>  MemeFeed</a>";

@@ -78,31 +78,61 @@
     <wrap>
         <div id="nav"></div>
         <div id="content" class="container">
-            <div class="account-box">
-                <h3 class="center-text">Login</h3>
+            <div class="account-box container" style="width: 100%;">
+                <div class="row">
+                    <h3 style="text-align: center">Existing Account</h3>
+                </div>
+                <br>
                 <form id="loginForm" onsubmit="login(); return false;">
-                    <label><b>Username or Email</b></label>
-                    <input type="text" placeholder="Enter Username or Email" name="usernameemail" required>
+                    <div class="row">
+                        <label class="col-md-5" style="text-align: right;"><b>Username or Email</b></label>
+                        <input class="col-md-4 blackText" type="text" placeholder="Enter Username or Email" name="usernameemail" required>
+                        <span class="col-md-3"></span>
+                    </div>
+<!--                         <br>
+-->                                            
+                    <div class="row">
+                        <label class="col-md-5" style="text-align: right;"><b>Password</b></label>
+                        <input class="col-md-4 blackText" type="password" placeholder="Enter Password" name="password" required>
+                        <span class="col-md-3"></span>
+                    </div>
                     <br>
-                    <label><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" name="password" required>
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 text-center"> 
+                            <button class="btn btn-info btn-md" type="submit" id="signupbtn">Login</button>
+                        </div>
+                    </div>
                     <br>
-                    <button type="submit" class="signupbtn">Login</button>
                 </form>
             </div>
-            <div class="account-box">
-                <h3>Don't have an account? Sign up below!</h3>
+            <div class="account-box container" style="width: 100%;">
+                <div class="row">
+                    <h3 style="text-align: center">Don't have an account? Sign up below!</h3>
+                    <br>
+                </div>
                 <form id="signupForm" onsubmit="signup(); return false;">
-                    <label><b>Email</b></label>
-                    <input type="text" placeholder="Enter Email" name="email" required>
+                    <div class="row">
+                        <label class="col-md-5" style="text-align: right;"><b>Email</b></label>
+                        <input class="col-md-4 blackText" type="text" placeholder="Enter Email" name="email" required>
+                        <span class="col-md-3"></span>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-5" style="text-align: right;"><b>Username</b></label>
+                        <input class="col-md-4 blackText" type="text" placeholder="Enter Username" name="username" required> 
+                        <span class="col-md-3"></span> 
+                    </div>
+                    <div class="row">
+                        <label class="col-md-5" style="text-align: right;"><b>Password</b></label>
+                        <input class="col-md-4 blackText" type="password" placeholder="Enter Password" name="password" required>
+                        <span class="col-md-3"></span> 
+                    </div>
                     <br>
-                    <label><b>Username</b></label>
-                    <input type="text" placeholder="Enter Username" name="username" required>
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 text-center">
+                            <button class="btn btn-info btn-md" type="submit">Sign up</button>
+                        </div>
+                    </div>
                     <br>
-                    <label><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" name="password" required>
-                    <br>
-                    <button type="submit" class="signupbtn">Sign up</button>
                 </form>
             </div>
         </div>

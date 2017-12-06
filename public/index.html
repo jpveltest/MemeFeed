@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
     <script type="text/javascript" src="authenticate.js"></script>
     <script type="text/javascript" src="makenavbar.js"></script>
+    <script src="../js/jquery-1.11.2.min.js"></script>
     <script>
         var socket = io();
         var x = 0;
@@ -41,7 +42,7 @@
                 info.className = "story-content";
 
                 if (content[i].src == "reddit") {
-                    var title = '<h3><a href="'+content[i].link+'" target="_blank">'+content[i].title+'</a></h3>';
+                    var title = '<h3 style="text-align: left;"><a href="'+content[i].link+'" target="_blank">'+content[i].title+'</a></h3>';
                     var author = '<span>Author: '+content[i].user+'</span>';
                     var score = '<span>Score: '+content[i].score+'</span>';
                     info.innerHTML = title+'<br>'+author+'<br>'+score;
@@ -56,12 +57,13 @@
                     info.innerHTML = title;
                     info.appendChild(video);
                 } else if (content[i].src == "memecenter") {
+                    console.log(content);
                     info.innerHTML = '<a href="'+content[i].link+'">'+content[i].meme+'</a>';
                 }
-                
+
                 var save = document.createElement("button");
                 save.innerHTML = "Save";
-                save.className = "btn";
+                save.className = "btn btn-content";
                 save.onclick = function() {
                     console.log("trying to save");
                     if (localStorage.loggedIn == "false") {
@@ -93,8 +95,10 @@
 
                 var share = document.createElement("button");
                 share.innerHTML = "Share";
-                share.className = "btn"
+                share.className = "btn btn-content";
+
                 share.onclick = function() {
+                    console.log("trying to share");
                     if (localStorage.loggedIn == "false") {
                         alert("You must login to share content!");
                         return false;
@@ -112,8 +116,10 @@
                     destroy.onclick = function() {
                         this.parentElement.remove();
                     }
+
                     modal.appendChild(destroy);
 
+                    console.log("passed the box");
                     var sendMe = [];
                     var xhr = new XMLHttpRequest();
                     xhr.open("POST", '/getallusersexceptcurrent', true);
@@ -162,7 +168,7 @@
                     }
                     xhr.send(Number(localStorage.userId));
 
-                    this.parentElement.appendChild(modal);
+                    this.parentElement.parentElement.appendChild(modal);
 
 
                     // var sendMe = {};
@@ -194,6 +200,26 @@
 <body>
     <wrap>
         <div id="nav"></div>
+        <!-- Modal -->
+          <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+            
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                  <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              
+            </div>
+          </div>
         <div id="content" class="container"></div>
         <center>Loading...</center>
     </wrap>
