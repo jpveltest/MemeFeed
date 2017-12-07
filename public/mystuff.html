@@ -22,16 +22,34 @@
         socket.on('newContent', function(results) {
             var contentDiv = document.getElementById("content");
             for (var i = 0; i < results.length; i++) {
+                console.log(results[i].content);
+                results[i].content = results[i].content.replace('<button class="btn btn-content">Share</button>', '');
+                results[i].content = results[i].content.replace('btn-content', "btn-danger");
+                results[i].content = results[i].content.replace('Save', 'Remove');
                 contentDiv.innerHTML += results[i].content;
                 contentDiv.innerHTML += "<br>";
             }
+
+            var memes = document.getElementsByClassName('save-button');
+            for (var i = 0; i<memes.length; i++){
+                memes[i].on
+            }
         });
 
-        function bottomPage() {
+        function bottomPage(clear) {
             lastCalled = new Date().getTime();
             var userId = Number(localStorage.userId);
             socket.emit('loadSaved', userId);
             x++;
+
+            var memes = document.getElementsByClassName("btn btn-content save-button");
+
+            // console.log(document);
+            // console.log(memes[0]);
+            // for (var i = 0; i < memes.length; i++){
+            //    memes[i].className = "btn btn-danger save-button";
+            //    memes[i].innerHTML = "Remove";
+            // }
         }
 
     </script>

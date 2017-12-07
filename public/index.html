@@ -62,7 +62,7 @@
 
                 var save = document.createElement("button");
                 save.innerHTML = "Save";
-                save.className = "btn btn-content";
+                save.className = "btn btn-content save-button";
                 save.onclick = function() {
                     console.log("trying to save");
                     if (localStorage.loggedIn == "false") {
@@ -72,6 +72,8 @@
                     var sendMe = {};
                     sendMe['userId'] = Number(localStorage.userId);
                     sendMe['content'] = escape(this.parentElement.parentElement.outerHTML);
+                    // sendMe['content'].replace('btn-content', "btn-danger")
+                    console.log(sendMe['content']);
                     var sendme = JSON.stringify(sendMe);
 
                     var xhr = new XMLHttpRequest();
@@ -102,7 +104,7 @@
                         return false;
                     }
                     var modal = document.createElement("div");
-                    modal.className = "moodal container";
+                    modal.className = "moodal";
                     // modal.style.backgroundColor = "gray";
                     modal.style.position = "fixed";
                     modal.style.top = "20%";
@@ -154,9 +156,9 @@
 
                     var destroy = document.createElement("button");
                     destroy.innerHTML = "Cancel";
-                    destroy.className="btn btn-danger btn-sm"
+                    destroy.className="btn btn-danger btn-sm padding-right";
                     destroy.onclick = function() {
-                        this.parentElement.parentElement.remove();
+                        this.parentElement.remove();
                     }
 
 
@@ -167,8 +169,6 @@
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xhr.onreadystatechange = function() {
                         if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
-                            var row1 = document.createElement("div");
-                            row1.className = "row1";
                             var data = xhr.responseText;
                             var results = JSON.parse(data);
                             var ul = document.createElement("ul");
@@ -176,16 +176,18 @@
                                 var li = document.createElement("li");
                                 li.innerHTML = results[i].username;
                                 li.value = results[i].id;
+                                li.className = "list-group-item";
                                 li.onclick = function() {
                                     if (!sendMe.includes(this.value)) {
-                                        this.style.backgroundColor = "white";
+                                        this.style.backgroundColor = "#FFF1D0";
                                         sendMe.push(this.value);
                                     } else {
-                                        this.style.backgroundColor = "#FFF1D0";
+                                        this.style.backgroundColor = "white";
                                         var index = sendMe.indexOf(this.value);
                                         sendMe.splice(index, 1);
                                     }
                                 }
+                                // li.className = "list-group-item";
                                 ul.appendChild(li);
                             }
                             var submitShare = document.createElement("button");
@@ -202,17 +204,19 @@
                                     }
                                 }
                                 var con = escape(this.parentElement.parentElement.outerHTML);
-                                xhr.send(sendMe + JSON.stringify(con));
+                                sendMe.push(JSON.stringify(con));
+                                xhr.send(sendMe);
 
                                 modal.remove(); // Will move into onreadystatechange later
                             }
-                            row1.appendChild(ul);
-                            modal.appendChild(row1);
-                            var row2 = document.createElement("div");
-                            row2.className = "row";
-                            row2.appendChild(submitShare);
-                            row2.appendChild(destroy);
-                            modal.appendChild(row2);
+
+                            var heading = document.createElement("h4");
+                            heading.innerHTML = "Share with...";
+                            modal.appendChild(heading);
+                            ul.className = "list-group";
+                            modal.appendChild(ul);
+                            modal.appendChild(destroy);
+                            modal.appendChild(submitShare);
                         }
                     }
                     xhr.send(Number(localStorage.userId));

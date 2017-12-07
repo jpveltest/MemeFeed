@@ -69,7 +69,7 @@ app.post('/savecontent', function(req, res) {
   console.log(data);
   var userId = data.match(/[0-9]+/)[0];
   console.log("userId: " + userId);
-  var content = data.match(/<div class="story".*div>/)[0]
+  var content = data.match(/<div class="story".*div>/)[0];
 
   var cleanContent = content.replace(/'/g, "`");
 
@@ -88,7 +88,8 @@ app.post('/getallusersexceptcurrent', function(req, res) {
 app.post('/sharecontent', function(req, res) {
   var data = Object.keys(req.body)[0];
   var nums = data.substring(0, data.indexOf('"'));
-  var content = data.substring(data.indexOf("<"), data.indexOf('<div class="modal"')) + "</div>";
+  console.log(data);
+  var content = data.substring(data.indexOf("<"), data.indexOf('<div class="moodal"')) + "</div>";
   var cleanContent = content.replace(/'/g, "`");
 
   var arr = nums.match(/[0-9]+/g);

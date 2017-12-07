@@ -194,3 +194,7 @@ input {
     padding: 10px; 
     /*opacity:0.5 !important;*/
 }
+
+.padding-right {
+    margin-right: 10px;
+}

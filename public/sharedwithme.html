@@ -22,7 +22,9 @@
         socket.on('newContent', function(results) {
             var contentDiv = document.getElementById("content");
             for (var i = 0; i < results.length; i++) {
-                console.log(results[i].content);
+                results[i].content = results[i].content.replace('<button class="btn btn-content">Share</button>', '');
+                results[i].content = results[i].content.replace('btn-content', "btn-danger");
+                results[i].content = results[i].content.replace('Save', 'Remove');
                 contentDiv.innerHTML += results[i].content;
                 var sp = document.createElement("span");
                 var date = new Date(results[i].date_added);
