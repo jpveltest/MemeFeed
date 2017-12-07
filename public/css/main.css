@@ -187,4 +187,10 @@ input {
     color: black;
 }
 
-
+.moodal {
+    border-radius: 25px;
+    background-color: #FFF1D0;
+    border:2px solid #086788;
+    padding: 10px; 
+    /*opacity:0.5 !important;*/
+}

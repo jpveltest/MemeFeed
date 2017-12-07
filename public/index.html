@@ -57,7 +57,6 @@
                     info.innerHTML = title;
                     info.appendChild(video);
                 } else if (content[i].src == "memecenter") {
-                    console.log(content);
                     info.innerHTML = '<a href="'+content[i].link+'">'+content[i].meme+'</a>';
                 }
 
@@ -73,7 +72,6 @@
                     var sendMe = {};
                     sendMe['userId'] = Number(localStorage.userId);
                     sendMe['content'] = escape(this.parentElement.parentElement.outerHTML);
-
                     var sendme = JSON.stringify(sendMe);
 
                     var xhr = new XMLHttpRequest();
@@ -104,20 +102,63 @@
                         return false;
                     }
                     var modal = document.createElement("div");
-                    modal.className = "moodal";
-                    modal.style.backgroundColor = "gray";
+                    modal.className = "moodal container";
+                    // modal.style.backgroundColor = "gray";
                     modal.style.position = "fixed";
                     modal.style.top = "20%";
                     modal.style.left = "45%";
                     modal.style.width = "200px";
 
+                    // var modal = document.createElement("div");
+                    //     modal.className = "modal fade";
+                    //     modal.setAttribute("tabindex", "-1");
+                    //     modal.setAttribute("role", "dialog");
+                    // var modal_dialog = document.createElement("div");
+                    //     modal_dialog.className = "modal-dialog";
+                    //     modal_dialog.setAttribute("role", "document");
+                    // var modal_content = document.createElement("div");
+                    //     modal_content.className="modal-content";
+                    // modal_dialog.appendChild(modal_content);
+                    // modal.appendChild(modal_dialog);
+
+                    // var modal_header = document.createElement("div");
+                    //     modal_header.className="modal-header";
+                    // var modal_body = document.createElement("div");
+                    //     modal_body.className = "modal-body";
+                    // var modal_footer = document.createElement("div");
+                    //     modal_body.className = "modal-footer";
+
+
+
+                    // var destroy = document.createElement("button");
+                    // destroy.setAttribute("type","button");
+                    // destroy.className="close";
+                    // destroy.setAttribute("data-dismiss", "modal");
+                    // destroy.setAttribute("aria-label","Close");
+                    // var spx = document.createElement("span");
+                    // spx.setAttribute = ("aria-hidden","true");
+                    // spx.innerHTML = "&times;";
+                    // destroy.appendChild(spx)
+                    // destroy.onclick = function() {
+                    //     this.parentElement.remove();
+                    // }
+
+                    // modal_header.appendChild(destroy);
+                    // modal_content.appendChild(modal_header);
+                    // modal_content.appendChild(modal_body);
+                    // modal_content.appendChild(modal_footer);
+
+                    // console.log(modal);
+
+
+
                     var destroy = document.createElement("button");
-                    destroy.innerHTML = "X";
+                    destroy.innerHTML = "Cancel";
+                    destroy.className="btn btn-danger btn-sm"
                     destroy.onclick = function() {
-                        this.parentElement.remove();
+                        this.parentElement.parentElement.remove();
                     }
 
-                    modal.appendChild(destroy);
 
                     console.log("passed the box");
                     var sendMe = [];
@@ -126,6 +167,8 @@
                     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                     xhr.onreadystatechange = function() {
                         if(xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                            var row1 = document.createElement("div");
+                            row1.className = "row1";
                             var data = xhr.responseText;
                             var results = JSON.parse(data);
                             var ul = document.createElement("ul");
@@ -138,7 +181,7 @@
                                         this.style.backgroundColor = "white";
                                         sendMe.push(this.value);
                                     } else {
-                                        this.style.backgroundColor = "gray";
+                                        this.style.backgroundColor = "#FFF1D0";
                                         var index = sendMe.indexOf(this.value);
                                         sendMe.splice(index, 1);
                                     }
@@ -147,6 +190,7 @@
                             }
                             var submitShare = document.createElement("button");
                             submitShare.innerHTML = "Share";
+                            submitShare.className = "btn btn-sm btn-success";
                             submitShare.onclick = function() {
                                 sendMe.push(Number(localStorage.userId));
                                 var xhr = new XMLHttpRequest();
@@ -157,14 +201,18 @@
                                         var data = xhr.responseText;
                                     }
                                 }
-                                var con = escape(this.parentElement.parentElement.parentElement.outerHTML);
-                                console.log(con);
+                                var con = escape(this.parentElement.parentElement.outerHTML);
                                 xhr.send(sendMe + JSON.stringify(con));
 
                                 modal.remove(); // Will move into onreadystatechange later
                             }
-                            modal.appendChild(ul);
-                            modal.appendChild(submitShare);
+                            row1.appendChild(ul);
+                            modal.appendChild(row1);
+                            var row2 = document.createElement("div");
+                            row2.className = "row";
+                            row2.appendChild(submitShare);
+                            row2.appendChild(destroy);
+                            modal.appendChild(row2);
                         }
                     }
                     xhr.send(Number(localStorage.userId));
@@ -195,32 +243,27 @@
             x++;
         }
 
+        // function newModal(){
+        //     var modal = document.createElement("div");
+        //     modal.className = "modal fade";
+        //     modal.tabindex = "-1";
+        //     modal.role = "dialog";
+        //     var modal_dialog = document.createElement("div");
+        //     modal_dialog.className = "modal-dialog";
+        //     modal_dialog.role="document";
+        //     var modal_content = document.createElement("div");
+        //     modal_content.className="modal-content";
+        //     modal_dialog.appendChild(modal_content);
+        //     modal.appendChild(modal_dialog);
+        //     return modal;
+        // }
+
     </script>
 
 </head>
 <body>
     <wrap>
         <div id="nav"></div>
-        <!-- Modal -->
-          <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-            
-              <!-- Modal content-->
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  <h4 class="modal-title">Modal Header</h4>
-                </div>
-                <div class="modal-body">
-                  <p>Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-              
-            </div>
-          </div>
         <div id="content" class="container"></div>
         <center>Loading...</center>
     </wrap>
