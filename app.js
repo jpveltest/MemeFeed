@@ -9,6 +9,19 @@ var wc = require('./webcrawler');
 
 var database = new db.Database();
 
+// Some random comments to see f it changed stuff
+//
+// Some random comments to see f it changed stuff
+//
+// Some random comments to see f it changed stuff
+//
+// Some random comments to see f it changed stuff
+//// Some random comments to see f it changed stuff
+//// Some random comments to see f it changed stuff
+//// Some random comments to see f it changed stuff
+//v
+// Some random comments to see f it changed stuff
+//
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
